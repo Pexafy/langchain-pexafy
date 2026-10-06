@@ -74,7 +74,8 @@ class _PexafyTool(BaseTool):
 
     response_format: Literal["content", "content_and_artifact"] = "content_and_artifact"
     handle_tool_error: bool = True
-    """Quota, rate-limit and not-found errors go back to the model as text it can act on."""
+    """Quota, rate-limit, not-found and server errors go back to the model as text it can
+    act on. An invalid key raises."""
 
     _client: Optional[pexafy.Client] = PrivateAttr(default=None)
 
@@ -92,8 +93,7 @@ class _PexafyTool(BaseTool):
         if self.api_key is None or not self.api_key.get_secret_value():
             raise ValueError(
                 "No Pexafy API key. Pass api_key= or set PEXAFY_API_KEY. "
-                "Keys are created at https://pexafy.com/dashboard/api-keys/ "
-                "(free plan, no card)."
+                "Get a free key at https://pexafy.com/dashboard/api-keys/create/"
             )
         return self
 
@@ -122,6 +122,13 @@ class _PexafyTool(BaseTool):
 
     @staticmethod
     def _error(exc: pexafy.PexafyError) -> ToolException:
+        """What the model can act on becomes a ToolException; a bad key is re-raised.
+
+        A wrong, revoked or under-scoped key is the developer's to fix: handing it to
+        the model would turn a configuration bug into a polite "I could not search".
+        """
+        if isinstance(exc, (pexafy.AuthenticationError, pexafy.PermissionError_)):
+            raise exc
         if isinstance(exc, pexafy.RateLimitError):
             return ToolException(f"Pexafy rate limit or quota reached: {exc}")
         if isinstance(exc, pexafy.NotFoundError):
