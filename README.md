@@ -16,6 +16,11 @@ Free key, no card: [pexafy.com/dashboard/api-keys/create](https://pexafy.com/das
 
 ## Use
 
+```bash
+pip install -U langchain langchain-anthropic  # for this example; any LangChain chat model works
+export ANTHROPIC_API_KEY="sk-ant-..."
+```
+
 ```python
 from langchain.agents import create_agent
 from langchain_pexafy import PexafyToolkit

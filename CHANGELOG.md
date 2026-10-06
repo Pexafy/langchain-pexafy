@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2 — 2026-10-07
+
+README only: the agent example now says what else it needs
+(`pip install langchain langchain-anthropic`), so it runs as written.
+
 ## 0.1.1 — 2026-10-07
 
 - An invalid or revoked key raises `pexafy.AuthenticationError` instead of reaching
