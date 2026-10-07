@@ -7,7 +7,7 @@ import {
 import type { CallbackManagerForToolRun } from "@langchain/core/callbacks/manager";
 import { z } from "zod/v4";
 
-export const VERSION = "0.1.0";
+export const VERSION = "0.1.1";
 
 const DEFAULT_BASE_URL = "https://api.pexafy.com";
 const QUERY_MAX_LENGTH = 250;
