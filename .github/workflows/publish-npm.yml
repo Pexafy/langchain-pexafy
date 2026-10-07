@@ -1,0 +1,41 @@
+# Publishes the LangChain.js package (js/) to npm when a GitHub release tagged js-vX.Y.Z is
+# published, with npm trusted publishing (OIDC, no token; provenance is attached automatically).
+# One-time setup on npmjs.com > langchain-pexafy > Settings > Trusted Publisher: GitHub Actions,
+# organization "Pexafy", repository "langchain-pexafy", workflow "publish-npm.yml".
+name: publish-npm
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    if: startsWith(github.event.release.tag_name, 'js-v')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: js
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - run: npm install -g npm@latest
+      - run: npm ci
+      - name: Tag matches package.json
+        run: test "${GITHUB_REF_NAME#js-v}" = "$(node -p 'require("./package.json").version')"
+      - name: Skip a version that is already on npm
+        id: check
+        run: |
+          v=$(node -p 'require("./package.json").version')
+          if npm view "langchain-pexafy@$v" version >/dev/null 2>&1; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "langchain-pexafy@$v is already on npm, nothing to publish"
+          fi
+      - if: steps.check.outputs.published != 'true'
+        run: npm publish --access public

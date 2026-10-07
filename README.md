@@ -4,6 +4,9 @@ LangChain and LangGraph tools for [Pexafy](https://pexafy.com): semantic search 
 9M+ free stock photos (Unsplash, Pexels, Pixabay and six more sources). Each photo
 comes back with its URL, alt text, licence and credit line.
 
+For LangChain.js, see [`js/`](https://github.com/Pexafy/langchain-pexafy/tree/main/js)
+(`npm install langchain-pexafy`).
+
 ## Install
 
 ```bash

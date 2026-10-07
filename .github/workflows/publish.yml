@@ -11,6 +11,8 @@ on:
 
 jobs:
   build:
+    # Tags starting with js- release the LangChain.js package (publish-npm.yml).
+    if: github.event_name != 'release' || !startsWith(github.event.release.tag_name, 'js-')
     runs-on: ubuntu-latest
     outputs:
       published: ${{ steps.check.outputs.published }}

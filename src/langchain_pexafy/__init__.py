@@ -7,7 +7,7 @@ PexafySearchPhotos().invoke({"query": "a quiet street in the rain"})
 ```
 """
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 from .toolkit import PexafyToolkit
 from .tools import PexafyFindSimilarPhotos, PexafyGetPhoto, PexafySearchPhotos

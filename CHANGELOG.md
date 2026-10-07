@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.3 — 2026-10-07
+
+- README points to the new LangChain.js package (`js/`, `npm install langchain-pexafy`).
+- The source distribution leaves out `js/`.
+- First release published from GitHub Actions with PyPI trusted publishing.
+
 ## 0.1.2 — 2026-10-07
 
 README only: the agent example now says what else it needs
