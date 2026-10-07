@@ -1,0 +1,54 @@
+# Publishes to PyPI when a GitHub release is published, with PyPI trusted publishing
+# (OIDC, no token). One-time setup on pypi.org > the project > Manage > Publishing:
+# GitHub, owner "Pexafy", repository "langchain-pexafy", workflow "publish.yml", environment "pypi".
+# A manual run (workflow_dispatch) only tests and builds.
+name: publish
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      published: ${{ steps.check.outputs.published }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[dev]" build
+      - run: ruff check .
+      - run: pytest -q tests/unit_tests
+      - name: Tag matches pyproject.toml
+        if: github.event_name == 'release'
+        run: test "${GITHUB_REF_NAME#v}" = "$(python -c "import tomllib;print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])")"
+      - name: Skip a version that is already on PyPI
+        id: check
+        run: |
+          read -r name version < <(python -c "import tomllib;p=tomllib.load(open('pyproject.toml','rb'))['project'];print(p['name'],p['version'])")
+          if curl -sf "https://pypi.org/pypi/$name/$version/json" >/dev/null; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "$name $version is already on PyPI, nothing to publish"
+          fi
+      - run: python -m build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    if: github.event_name == 'release' && needs.build.outputs.published != 'true'
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
