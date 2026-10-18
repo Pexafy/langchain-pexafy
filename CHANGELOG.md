@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.4 — 2026-10-18
+
+- Accepts `pexafy` 1.x (`pexafy>=0.1.2,<2`). The 0.1 pin kept anyone who also
+  installs `langchain-pexafy` on the 0.1 client.
+
 ## 0.1.3 — 2026-10-07
 
 - README points to the new LangChain.js package (`js/`, `npm install langchain-pexafy`).
