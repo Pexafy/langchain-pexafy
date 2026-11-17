@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.5 — 2026-11-17
+
+- The product is now named Pexafy Stock Photos: the package summary and the README
+  say so, without figures that change over time. No code change.
+
 ## 0.1.4 — 2026-10-18
 
 - Accepts `pexafy` 1.x (`pexafy>=0.1.2,<2`). The 0.1 pin kept anyone who also

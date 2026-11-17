@@ -1,8 +1,8 @@
 # langchain-pexafy (LangChain.js)
 
 [LangChain.js](https://docs.langchain.com/oss/javascript/langchain/overview) and LangGraph.js tools
-for [Pexafy](https://pexafy.com): semantic search over 9M+ free stock photos (Unsplash, Pexels,
-Pixabay and six more sources). Each photo comes back with its URL, alt text, licence and credit line.
+for [Pexafy Stock Photos](https://pexafy.com): semantic search over millions of free-to-use photos
+(Unsplash, Pexels, Pixabay and more). Each photo comes back with its URL, alt text, licence and credit line.
 For Python, see the [root of this repository](https://github.com/Pexafy/langchain-pexafy).
 
 ## Install

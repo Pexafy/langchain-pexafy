@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "langchain-pexafy"
-version = "0.1.4"
-description = "LangChain tools for Pexafy: semantic search over 9M+ free stock photos from Unsplash, Pexels, Pixabay and more"
+version = "0.1.5"
+description = "LangChain tools for Pexafy Stock Photos: semantic search over millions of free-to-use photos from Unsplash, Pexels, Pixabay and more"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
